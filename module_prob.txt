@@ -1,0 +1,84 @@
+I've created my namespace in app/Config/Autoload.php
+// app/Config/Autoload.php
+
+	public $psr4 = [
+		APP_NAMESPACE => APPPATH, // For custom app namespace
+		'Config'      => APPPATH . 'Config',
+		'Bobk'          => ROOTPATH.'Bobk'
+	];
+
+In folder ROOTPATH/Bobk I have a module folder called 'airports'
+airports/controllers/Airports.php
+airports/models/Airport_model.php (not used)
+airports/views/moduleTest.php
+
+My airports/controllers/Airports.php file:
+<?php namespace Bobk\Airports\controllers;
+
+use App\Controllers\BaseController;
+use Bobk\Airports\models\Airport_Model;
+
+class Airports extends BaseController 
+{
+
+.......
+
+    public function moduleTest()
+    {
+        $data['title']="Module View";
+		echo view('Bobk\airports\views\moduleTest', $data);
+    }
+}
+
+// app\Config\routes.php
+/*
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
+$routes->get('/', 'Home::index');
+
+$routes->get('Airports/ModuleTest', '\Bobk\airports\Controllers\Airports::moduleTest');
+
+
+
+// ROOTPATH/Bobk/airports/views/moduleTest.php
+<html>
+<head>
+</head>
+<body>
+<h2><?= esc($title) ?></h2>
+<h3>Hello</h3>
+</body>
+</html>
+
+THE PROBLEM
+// system/View/View.php LINE:195
+		if (! is_file($this->renderVars['file']))
+		{
+			$this->renderVars['file'] = $this->loader->locateFile($this->renderVars['view'], 'Views', empty($fileExt) ? 'php' : $fileExt);
+
+This call to locateFile() has the $folder argument set to the literal string 'Views'
+This results in the resolved viewpath being:
+ROUTEPATH\Bobk\/Views/airports/views/moduleTest.php"
+(I've used ROUTEPATH to avoid having to type the complete path)
+
+Notice that this call to locateFile has placed </Views/> (the $folder argument) in between
+Bobk\ and airports. This is obviously an incorrect path and results in the ViewException:
+Invalid file: Bobk\airports\views\moduleTest.php
+
+locateFile() returns false if it can't locate the view file, NOT the offending path which
+is probaly why the invalid file displayed on screen doesn't match.
+
+WHAT APPEARS TO WORK (but for how long ?)
+Edit system/View/View.php LINE:197 and replace 'Views' argument with an empty string ''
+
+197			$this->renderVars['file'] = $this->loader->locateFile($this->renderVars['view'], '', empty($fileExt) ? 'php' : $fileExt);
+
+Not advocsting this as a real fix but haven't yet managed to find out why the
+'Views' argument is there and what it is meant
+to achieve. Testing this modification with modules and with normal app controllers
+and views works.
+Must be a reason for 'Views' argument and I look forward to finding out from those
+wiser (more informed) than me.
+ 
