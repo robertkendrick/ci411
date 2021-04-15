@@ -43,7 +43,12 @@ class Autoload extends AutoloadConfig
 		APP_NAMESPACE => APPPATH, // For custom app namespace
 		'Config'      => APPPATH . 'Config',
 		'Bobk'          => ROOTPATH.'Bobk',
-		'Example'		=> ROOTPATH . 'Example'
+		'Example'		=> ROOTPATH . 'Example',
+	//	'Someone\plugins'		=> ROOTPATH . 'someone/plugins',
+	//	'Someonelse\plugins'	=> ROOTPATH . 'someonelse/plugins',
+	//	'Someonelse'	=> ROOTPATH . 'someonelse',
+	//	'CustomSpark' => ROOTPATH . 'someone/plugins',
+		"Someone\plugins" => APPPATH.'ThirdParty/trydummy/src'
 	];
 
 	/**

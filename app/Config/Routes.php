@@ -34,11 +34,14 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-$routes->get('Airports', '\Bobk\airports\Controllers\Airports::index');
+//$routes->get('Airports', '\Bobk\airports\Controllers\Airports::index');
 $routes->get('Airports/ModuleTest', '\Bobk\airports\Controllers\Airports::moduleTest');
 
 $routes->get('Airports/testNSView', '\Bobk\airports\Controllers\Airports::testNSView');
 
+$routes->group('Bobk', ['namespace' => 'Bobk\airports\controllers'],  function($routes) {
+	$routes->add('Airports', 'Airports::index');
+});
 /*
  * --------------------------------------------------------------------
  * Additional Routing

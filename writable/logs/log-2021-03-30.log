@@ -20,3 +20,8 @@ CRITICAL - 2021-03-30 19:19:47 --> Invalid file: Bobk\airports\views\orig_index.
 #6 C:\Users\bob\Documents\PHP_WebSites\codeigniter\ci411\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
 #7 C:\Users\bob\Documents\PHP_WebSites\codeigniter\ci411\public\index.php(44): CodeIgniter\CodeIgniter->run()
 #8 {main}
+CRITICAL - 2021-03-30 23:28:52 --> syntax error, unexpected 'function' (T_FUNCTION), expecting ')'
+#0 C:\Users\bob\Documents\PHP_WebSites\codeigniter\ci411\system\CodeIgniter.php(385): CodeIgniter\CodeIgniter->tryToRouteIt(NULL)
+#1 C:\Users\bob\Documents\PHP_WebSites\codeigniter\ci411\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#2 C:\Users\bob\Documents\PHP_WebSites\codeigniter\ci411\public\index.php(44): CodeIgniter\CodeIgniter->run()
+#3 {main}
