@@ -2,7 +2,7 @@
 
 //use Myth\Controllers\ThemedController;
 use App\Controllers\BaseController;
-use Bobk\Airports\models\Airport_Model;
+use Bobk\airports\models\Airport_Model;
 
 /**
  * Airports Controller

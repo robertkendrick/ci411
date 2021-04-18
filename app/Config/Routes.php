@@ -39,8 +39,8 @@ $routes->get('Airports/ModuleTest', '\Bobk\airports\Controllers\Airports::module
 
 $routes->get('Airports/testNSView', '\Bobk\airports\Controllers\Airports::testNSView');
 
-$routes->group('Bobk', ['namespace' => 'Bobk\airports\controllers'],  function($routes) {
-	$routes->add('Airports', 'Airports::index');
+$routes->group('bobk', ['namespace' => 'Bobk\airports\controllers'],  function($routes) {
+	$routes->add('airports', 'Airports::index');
 });
 /*
  * --------------------------------------------------------------------

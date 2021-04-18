@@ -5,22 +5,21 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 
 /**
- * Migration: AddAirports
+ * Migration: AddTaxAirports
  *
  * Created by: SprintPHP
- * Created on: 15/04/2021 11:15:44
+ * Created on: 15/04/2021 14:14:54
  *
  */
-class AddAirports extends Migration {
+class AddTaxAirports extends Migration {
 
     public function up ()
     {
         $field = [
-		'mycol' => [
-			'type' => 'varchar',
-			'constraint' => 10,
-			'null' => true,
-			'default' => '',
+		'tax' => [
+			'type' => 'int',
+			'constraint' => 9,
+			'default' => 0,
 		], 
 	];
     $this->forge->addColumn('airports', $field);
@@ -30,7 +29,7 @@ class AddAirports extends Migration {
 
     public function down ()
     {
-        $this->forge->dropColumn('airports', 'mycol');
+        $this->forge->dropColumn('airports', 'tax');
     }
 
     //--------------------------------------------------------------------

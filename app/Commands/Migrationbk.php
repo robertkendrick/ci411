@@ -289,8 +289,6 @@ class Migrationbk extends BaseCommand
 
 			$fields[$field] = $f;
 		}
-
-//		var_dump($fields);
 		
 		return $fields;
 	}
@@ -328,9 +326,11 @@ class Migrationbk extends BaseCommand
 		'number'    => 'int'
 	];
 
+/*
 	protected $allowedActions = [
 		'create', 'add', 'remove'
 	];
+
 
 	protected $actionMap = [
 		'make'      => 'create',
@@ -338,4 +338,5 @@ class Migrationbk extends BaseCommand
 		'drop'      => 'remove',
 		'delete'    => 'remove'
 	];
+*/
 } 
