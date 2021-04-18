@@ -1,8 +1,8 @@
-<?php namespace Bobk\Airports\controllers;
+<?php namespace Bobk\airports\controllers;
 
 //use Myth\Controllers\ThemedController;
 use App\Controllers\BaseController;
-use Bobk\Airports\models\Airport_Model;
+use Bobk\airports\models\Airport_Model;
 
 /**
  * Airports Controller
@@ -24,7 +24,7 @@ class Airports extends BaseController
     protected $language_file   = null;
 
     // If set, this model file will automatically be loaded.
-    protected $model_file      = 'Airport_model';
+    protected $model_file      = 'Airport_Model';
 
     
     /**
@@ -58,9 +58,10 @@ class Airports extends BaseController
     {
         // normal
         // if skip is true left with empty constructor so no iherited constructors will be called
-        if ($skip === false) {
-            //parent::__construct();
-        }
+//        if ($skip === false) {
+//            parent::__construct();
+//        }
+        $this->model = new Airport_Model();
     }
 
     // ------------------------------------------------------------------
@@ -72,13 +73,13 @@ class Airports extends BaseController
      */
     public function index()
     {
-        $model = new Airport_Model();
+//        $model = new Airport_Model();
 
         //$rows = $this->Airport_model->as_array()
 //									->find_all();
 //        $this->setVar('rows', $rows);
 
-        $data['rows'] = $model->findall();
+        $data['rows'] = $this->model->findall();
 		echo view('Bobk\airports\Views\orig_index', $data);
     }
 
@@ -91,26 +92,29 @@ class Airports extends BaseController
      */
     public function create()
     {
-        $this->load->helper('form');
-        $this->load->helper('inflector');
-//        $this->load->model('Airport_model');    //load some other way
+        helper('form');
 
-        if ($this->input->method() == 'post')
+        $model = new Airport_Model();
+
+        if ($this->request->getMethod() === 'post' && $this->validate([
+                'name' => 'required|min_length[3]|max_length[255]',
+                'code'  => 'required',
+            ]))
         {
-            $post_data = $this->input->post();
-
-//            if ($this->airports/models/airport_model->insert($post_data) )
-            if ($this->Airport_model->insert($post_data) )
-            {
-                $this->setMessage('Successfully created item.', 'success');
-                redirect( site_url('airports') );
-            }
-
-//            $this->setMessage('Error creating item. '. $this->airports/models/airport_model->error(), 'danger');
-            $this->setMessage('Error creating item. '. $this->airport_model->error(), 'danger');
+            $model->save([
+                'name' => $this->request->getPost('name'),
+                'code'  => $this->request->getPost('code'),
+                'description'  => $this->request->getPost('description'),
+            ]);
+    
+            return redirect('bobk/airports');
         }
-
-		$this->render();
+        else
+        {
+//            echo view('templates/header', ['title' => 'Create a news item']);
+            echo view('Bobk\airports\Views\create');
+//            echo view('templates/footer');
+        }
     }
 
     //--------------------------------------------------------------------
@@ -147,8 +151,8 @@ class Airports extends BaseController
      */
     public function update($id)
     {
-        $this->load->helper('form');
-        $this->load->helper('inflector');
+        helper('form');
+        helper('inflector');
 
         if ($this->input->method() == 'post')
         {
