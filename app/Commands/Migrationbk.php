@@ -49,12 +49,12 @@ class Migrationbk extends BaseCommand
      * @var array
      */
 	protected $options = [
-		'--table'     => 'Supply a table name. Default: "the lowercased plural of the class name".',
-		'--dbgroup'   => 'Database group to use. Default: "default".',
 		'--namespace' => 'Set root namespace. Default: "APP_NAMESPACE".',
-        '--fields'    => 'The column names, types and sizes (sizes are optional) Eg. "id:id name:varchar:25"',
+		'--dbgroup'   => 'Database group to use. Default: "default".',
 		'--action'	  => 'What action to perform (create, add or remove)',
-		'--column'	  => 'The column name to add or remove (dont use with --fields)',
+		'--table'     => 'Supply a table name.',
+        '--fields'    => 'The column names, types and sizes (sizes are optional) in quotes when creating a table. Eg. "id:id name:varchar:25"',
+		'--column'	  => 'The column name types and sizes (sizes are optional) in quotes when adding or removing a column (dont use with --fields)',
     ];
 
     /**
@@ -289,6 +289,8 @@ class Migrationbk extends BaseCommand
 
 			$fields[$field] = $f;
 		}
+
+//		var_dump($fields);
 		
 		return $fields;
 	}
@@ -326,11 +328,9 @@ class Migrationbk extends BaseCommand
 		'number'    => 'int'
 	];
 
-/*
 	protected $allowedActions = [
 		'create', 'add', 'remove'
 	];
-
 
 	protected $actionMap = [
 		'make'      => 'create',
@@ -338,5 +338,4 @@ class Migrationbk extends BaseCommand
 		'drop'      => 'remove',
 		'delete'    => 'remove'
 	];
-*/
 } 
