@@ -54,7 +54,7 @@ class Migrationbk extends BaseCommand
 		'--action'	  => 'What action to perform (create, add or remove)',
 		'--table'     => 'Supply a table name.',
         '--fields'    => 'The column names, types and sizes (sizes are optional) in quotes when creating a table. Eg. "id:id name:varchar:25"',
-		'--column'	  => 'The column name types and sizes (sizes are optional) in quotes when adding or removing a column (dont use with --fields)',
+		'--column'	  => 'The column name, type and size (size is optional) in quotes when adding or removing a column (dont use with --fields)',
     ];
 
     /**
