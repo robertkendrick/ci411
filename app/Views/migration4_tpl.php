@@ -53,20 +53,17 @@ if ($action == 'create')
 
  if ($action == 'remove' && ! empty($column))
 {
-    $up = "\$this->forge->dropColumn('{$table}', '{$column}');";
+    $up = "\$this->forge->dropColumn('{$table}', '{$columnName}');";
 
-    $down = "\$field = [
-        $column => {$column_string}
-        ];
-
-        \$this->forge->addColumn('{$table}', \$field);";
+    $down = "\$field = {$column};
+    \$this->forge->addColumn('{$table}', \$field);";
 }
 
 //--------------------------------------------------------------------
 // The Template
 //--------------------------------------------------------------------
 
-echo "<?php
+echo "<@php
 
 namespace {namespace};
 
@@ -75,7 +72,8 @@ use CodeIgniter\Database\Migration;
 /**
  * Migration: {class}
  *
- * Created by: SprintPHP
+ * Created by: make:migrationplus 
+ * code based heavilly on CodeIginter 3 SprintPHP
  * Created on: {$today}
  *
  */
