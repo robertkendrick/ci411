@@ -66,21 +66,17 @@ class Migrationbk extends BaseCommand
      */
     public function run(array $params)
     {
-//        CLI::prompt('Name the database table you would like to create:');
-//        CLI::write('Hello world!.', 'green');
-    
-//        $this->component = 'Migration';
         $this->component = 'Migrationbk';
         $this->directory = 'Database\Migrations';
         $this->template  = 'migration4_tpl.php';     //bobk - not the config template
 
-        /*
-        if (array_key_exists('session', $params) || CLI::getOption('session'))
-        {
-            $table     = $params['table'] ?? CLI::getOption('table') ?? 'ci_sessions';
-            $params[0] = "_create_{$table}_table";
-        }
-*/
+		if (array_key_exists('session', $params) || CLI::getOption('session'))
+		{
+			$this->template = 'migration.tpl.php';
+			$table     = $params['table'] ?? CLI::getOption('table') ?? 'ci_sessions';
+			$params[0] = "_create_{$table}_table";
+		}
+
         $this->execute($params);
     }
 
@@ -93,57 +89,66 @@ class Migrationbk extends BaseCommand
 	 */
 	protected function prepare(string $class): string
 	{
-        //bobk 
-//		$data['clean_name'] = 'mycleanname';
-//		$data['name'] = 'create_fredbloggs_table';
-		$data['today'] = date('d/m/Y H:i:s');;
-		$data['primary_key'] = 'id';
+		$data['session'] = false;
 
-        //end bobk
+		if ($this->getOption('session'))
+		{
+			$table   = $this->getOption('table');
+			$DBGroup = $this->getOption('dbgroup');
 
-        $table   = $this->getOption('table');
-		$DBGroup = $this->getOption('dbgroup');
-		$return  = $this->getOption('return');
-        //bobk
-//        $fields =  $this->getOption('fields');
-//        $fieldstr = 'id:id name:varchar:26 created:datetime';
-//        $arrayFields = $this->parseFields($fields);		// from sprint
-//        $str = $this->stringify( $arrayFields );		// from sprint
-//        $data['fields'] = trim( $str, ", \n");
+			$data['session'] = true;
+			$data['table']   = is_string($table) ? $table : 'ci_sessions';
+			$data['DBGroup'] = is_string($DBGroup) ? $DBGroup : 'default';
+			$data['matchIP'] = config('App')->sessionMatchIP;
 
-		$baseClass = strtolower(str_replace(trim(implode('\\', array_slice(explode('\\', $class), 0, -1)), '\\') . '\\', '', $class));
-		$baseClass = strpos($baseClass, 'model') ? str_replace('model', '', $baseClass) : $baseClass;
-
-		$table   = is_string($table) ? $table : plural($baseClass);
-		$DBGroup = is_string($DBGroup) ? $DBGroup : 'default';
-		$return  = is_string($return) ? $return : 'array';
-
-		$action = $this->getOption('action');
-		$data['table'] = $table;
-
-		// prepare for create action
-		if ($action === 'create') {
-			$fields = $this->getOption('fields');
-			if ($fields === null) {
-				throw new Exception("error, missing --fields information");
-			}
-			$arrayFields = $this->parseFields($fields);		// from sprint
-			$data['fields'] = trim( $this->stringify( $arrayFields ), ", \n");	//bobk added \n			
+			return $this->parseTemplate($class, [], [], $data);
 		}
+		else {
+			//bobk: prompting
+			$action = $this->getOption('action') ??
+				$action = CLI::prompt(
+					'What migration action are you performing? (create, add or remove)?', null, 'required');
+			
+			$table = $this->getOption('table') ??
+				$table = CLI::prompt('Name the database table?', null, 'required');
 
-		// prepare  for the add action
-		if ($action === 'add') {
-			$column = $this->getOption('column');
-			if ($column === null) {
-				throw new Exception("error, missing --column information");			
+			if ($action === 'create') {
+				$fields = $this->getOption('fields') ??
+					$fields = CLI::prompt(
+						'Enter the column names, types and sizes (sizes optional) Eg. id:id name:varchar:25 created:datetime', 
+						null, 'required');
+				$arrayFields = $this->parseFields($fields);		// from sprint
+				$data['fields'] = trim( $this->stringify( $arrayFields ), ", \n");	//bobk added \n			
+			} else {
+				if ($action === 'add' || $action === 'remove') {
+					$column = $this->getOption('column') ??
+						$column = CLI::prompt(
+							'Enter the column name, type and size (size is optional) that you are adding or removing Eg. name:varchar:25', 
+							null, 'required');
+					$data['columnName'] = substr($column, 0, strpos($column, ':'));
+					$columnField = $this->parseFields($column);		// from sprint
+					$data['column'] = trim( $this->stringify( $columnField ), ", \n");	//bobk added \n					
+				}
 			}
-			$data['columnName'] = substr($column, 0, strpos($column, ':'));
-			$columnField = $this->parseFields($column);		// from sprint
-			$data['column'] = trim( $this->stringify( $columnField ), ", \n");	//bobk added \n					
+	//        CLI::write('Hello world!.', 'green');
+	//------------------------------------------------------------------------------------
+			$data['today'] = date('d/m/Y H:i:s');;
+			$data['primary_key'] = 'id';
+
+			$DBGroup = $this->getOption('dbgroup');
+			$return  = $this->getOption('return');
+
+			$baseClass = strtolower(str_replace(trim(implode('\\', array_slice(explode('\\', $class), 0, -1)), '\\') . '\\', '', $class));
+			$baseClass = strpos($baseClass, 'model') ? str_replace('model', '', $baseClass) : $baseClass;
+
+			$table   = is_string($table) ? $table : plural($baseClass);
+			$DBGroup = is_string($DBGroup) ? $DBGroup : 'default';
+			$return  = is_string($return) ? $return : 'array';
+
+			$data['table'] = $table;
+			$data['action'] = $action;
 		}
-
-		$data['action'] = $action;
-
+		
 		return $this->parseTemplate($class, ['{table}', '{DBGroup}', '{return}'], 
                                         [$table, $DBGroup, $return], $data);
     }

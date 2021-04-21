@@ -81,6 +81,7 @@ class Airports extends BaseController
 
         $data['rows'] = $this->model->findall();
 		echo view('Bobk\airports\Views\orig_index', $data);
+//		echo view('orig_index', $data);     // don't work
     }
 
     //--------------------------------------------------------------------

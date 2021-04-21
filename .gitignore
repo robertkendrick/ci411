@@ -2,6 +2,7 @@
 =======
 .env
 >>>>>>> fa75d9a97ce6de8c6ccf1f5fe0154316b753b836
+public
 app/Database/Migrations
 vendor
 writable
