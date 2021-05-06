@@ -73,7 +73,6 @@ use CodeIgniter\Database\Migration;
  * Migration: {class}
  *
  * Created by: make:migrationplus 
- * code based heavilly on CodeIginter 3 SprintPHP
  * Created on: {$today}
  *
  */

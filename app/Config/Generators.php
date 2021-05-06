@@ -36,7 +36,7 @@ class Generators extends BaseConfig
 		'make:validation'   => 'CodeIgniter\Commands\Generators\Views\validation.tpl.php',
 		'session:migration' => 'CodeIgniter\Commands\Generators\Views\migration.tpl.php',
 
-		//bobk: the Migrationbk view file
-		'make:migrationbk' => 'App\Views\migration4_tpl.php',
+		//bobk: the Migrationplus view file
+		'make:migrationplus' => 'App\Views\migration\migration4_tpl.php',
 	];
 }

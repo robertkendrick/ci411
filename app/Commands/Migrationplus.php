@@ -5,7 +5,12 @@ use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\CLI\GeneratorTrait;
 
-class Migrationbk extends BaseCommand
+/**
+	* Code based heavily on CodeIgniter 3 SprintPHP
+	* by Lonnie Ezell
+*/
+
+class Migrationplus extends BaseCommand
 {
     use GeneratorTrait;
     /**
@@ -13,28 +18,28 @@ class Migrationbk extends BaseCommand
      *
      * @var string
      */
-    protected $group = 'Testing';
+    protected $group = 'Generators';
 
     /**
      * The Command's Name
      *
      * @var string
      */
-    protected $name = 'make:migrationbk';
+    protected $name = 'make:migrationplus';
 
     /**
      * The Command's Description
      *
      * @var string
      */
-    protected $description = 'Make a migration file to create a table';
+    protected $description = 'Generates a new migration file to create a table or add/remove columns from a table';
 
     /**
      * The Command's Usage
      *
      * @var string
      */
-    protected $usage = 'make:migrationbk [options]';
+    protected $usage = 'make:migrationplus [arguments] [options]';
 
     /**
      * The path to someone\src directory.
@@ -66,9 +71,9 @@ class Migrationbk extends BaseCommand
      */
     public function run(array $params)
     {
-        $this->component = 'Migrationbk';
+        $this->component = 'Migrationplus';
         $this->directory = 'Database\Migrations';
-        $this->template  = 'migration4_tpl.php';     //bobk - not the config template
+        $this->template  = 'migration4_tpl.php'; 
 
 		if (array_key_exists('session', $params) || CLI::getOption('session'))
 		{
@@ -130,10 +135,9 @@ class Migrationbk extends BaseCommand
 					$data['column'] = trim( $this->stringify( $columnField ), ", \n");	//bobk added \n					
 				}
 			}
-	//        CLI::write('Hello world!.', 'green');
 	//-------------------------------------------------------------------------------------
 			$data['today'] = date('d/m/Y H:i:s');;
-			$data['primary_key'] = 'id';
+			$data['primary_key'] = $this->primary_key ?? null;
 
 			$DBGroup = $this->getOption('dbgroup');
 			$return  = $this->getOption('return');

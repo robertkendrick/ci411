@@ -21,8 +21,9 @@ class BkTest extends BaseController
 
 	public function otherModule()
 	{
-	//	$m = new \Bobk\airports\controllers\Airports();
-		$m = new Airports();
+		// calling another controller in Bobk namespace
+		//	$m = new \Bobk\airports\controllers\Airports();
+		$m = new Airports();	//see use above
 		return $m->index();
 	}
 
